@@ -7,6 +7,9 @@
 
 <!-- Import WebViewer as a script tag -->
 <script src='/lib/webviewer.min.js'></script>
+<div class='header'>
+  <input type='file' onchange="loadDocument(this)">
+</div>
 
 <body>
   <div id='viewer' style='width: 1024px; height: 600px; margin: 0 auto;'></div>
@@ -15,6 +18,7 @@
 </html>
 
 <script>
+  let testInstance = null;
   WebViewer({
     path: '/lib', // path to the PDFTron 'lib' folder on your server
     licenseKey: 'Insert commercial license key here after purchase',
@@ -24,8 +28,11 @@
     .then(instance => {
       const docViewer = instance.Core.documentViewer;
       const annotManager = instance.Core.annotationManager;
-      // call methods from instance, docViewer and annotManager as needed
 
+      
+      instance.UI.enableFeatures([instance.UI.Feature.FilePicker]);
+      // call methods from instance, docViewer and annotManager as needed
+      testInstance = instance;
       // you can also access major namespaces from the instance as follows:
       // const Tools = instance.Core.Tools;
       // const Annotations = instance.Core.Annotations;
@@ -34,4 +41,9 @@
         // call methods relating to the loaded document
       });
     });
+
+    function loadDocument(fileInput) {
+        testInstance.loadDocument(fileInput.files[0]);
+    }
+    
 </script>
